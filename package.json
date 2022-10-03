@@ -38,11 +38,13 @@
     "hardhat": "^2.8.3",
     "hardhat-deploy": "^0.10.4",
     "hardhat-deploy-ethers": "^0.3.0-beta.13",
+    "ipfs-http-client": "^58.0.1",
     "mocha": "^9.2.0",
     "node-fetch": "2",
     "snarkjs": "^0.4.13"
   },
   "devDependencies": {
+    "@babel/helper-compilation-targets": "^7.19.3",
     "chai-bignumber": "^3.0.0",
     "ethereum-waffle": "^3.4.0"
   }
