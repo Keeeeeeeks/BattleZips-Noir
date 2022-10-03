@@ -18,6 +18,7 @@ This project is WIP. Please contact @jp4g_ on twitter or open issues with questi
 
 ## Steps (requires Linux/ OS X)
 Since compatibility is a common question, M1 chips will outperform the expected wait times on ptau and setup
+Node v16.17.1 was last used to compile this project, and failure to use it will break ipfs in deploy script (either use node 16 or comment out IPFS)
 
 ### 0. [Ensure Circom 2.x.x is installed locally](https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/installation.md)
 ```

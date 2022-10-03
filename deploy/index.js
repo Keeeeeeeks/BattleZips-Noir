@@ -1,7 +1,6 @@
 require('dotenv').config()
-const { ethers } = require('hardhat');
+const { ethers } = require('hardhat')
 const { addContract, Forwarders } = require('../test/utils/biconomy')
-const ipfsApi = require('ipfs-api')
 const fs = require('fs')
 
 
@@ -56,7 +55,7 @@ module.exports = async ({ run, ethers, network, deployments }) => {
         } catch (err) {
             throw new Error("Failed to add contract & methods to Biconomy", err)
         }
-        
+
     }
     // add circuit files to ipfs if not hardhat
     if (chainId !== 31337) await ipfsDeploy()
@@ -95,15 +94,26 @@ const ipfsDeploy = async () => {
         }
     ]
     // deploy files to ipfs and log CID paths
-    const ipfs = ipfsApi('ipfs.infura.io', '5001', { protocol: 'https' })
+    const projectId = process.env.IPFS_ID
+    const projectSecret = process.env.IPFS_SECRET
+    const { create } = await import('ipfs-http-client')
+    const ipfs = create({
+        host: 'ipfs.infura.io',
+        port: 5001,
+        protocol: 'https',
+        headers: {
+            authorization: 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
+        }
+    })
+
     const labels = ['Board', 'Hash']
     console.log(`\nPublishing circuit files to IPFS`)
     console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
     for (let i = 0; i < files.length; i++) {
         const cids = {
-            verification_key: (await ipfs.files.add(files[i].verification_key))[0].path,
-            zkey: (await ipfs.files.add(files[i].zkey))[0].path,
-            circuit: (await ipfs.files.add(files[i].circuit))[0].path
+            verification_key: (await ipfs.add(files[i].verification_key)).path,
+            zkey: (await ipfs.add(files[i].zkey)).path,
+            circuit: (await ipfs.add(files[i].circuit)).path
         }
         console.log(`\n${labels[i]} verification key CID: ${cids.verification_key}`)
         console.log(`${labels[i]} zkey CID: ${cids.zkey}`)
@@ -137,7 +147,7 @@ const verifyEtherscan = async (bvAddress, svAddress, forwarder, gameAddress) => 
     } else if (chains[1].includes(chainId) && !POLYGONSCAN) {
         console.log(`Polygonscan API key not found, skipping verification on chain ${chainId}`)
         return
-    }     
+    }
     // error message
     const WAIT_ERR = "Wait 30 seconds for tx to propogate and rerun"
     try {
