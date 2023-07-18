@@ -138,7 +138,7 @@ fn main() {
 fn choose_random_number() -> String {
     use rand::Rng;
     let mut rng = rand::thread_rng();
-    let random_number = rng.gen_range(1..=9);
+    let random_number = rng.gen_range(11111..=99999);
     random_number.to_string()
 }
 

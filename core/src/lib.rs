@@ -15,7 +15,7 @@
 use risc0_zkvm::sha::Digest;
 use serde::{Deserialize, Serialize};
 
-pub const WORD_LENGTH: usize = 1;
+pub const WORD_LENGTH: usize = 4;
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub enum LetterFeedback {
